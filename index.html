@@ -3,59 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday Cheejaaa 🎂</title>
+<title>Happy Birthday Cheejaaa 🎀</title>
 
 <style>
     body {
         margin: 0;
         padding: 0;
         font-family: "Poppins", sans-serif;
-        background: linear-gradient(120deg, #ffe2f0, #ffd4e8, #ffecf6);
+        background: linear-gradient(160deg, #ffe8f3, #ffd6ea, #ffe8f5);
         overflow-x: hidden;
-        color: #5a0033;
         text-align: center;
+        color: #68003f;
     }
 
     h1 {
-        font-size: 40px;
         margin-top: 20px;
-        color: #d40078;
-        text-shadow: 0 4px 20px rgba(255, 0, 128, 0.3);
+        font-size: 38px;
+        color: #ca007a;
         font-weight: 700;
+        text-shadow: 0 5px 20px rgba(255, 0, 120, .25);
     }
 
     p {
         font-size: 18px;
-        opacity: 0.85;
+        opacity: .85;
         margin-top: -4px;
-        margin-bottom: 20px;
     }
 
-    /* LANDSCAPE WIDE SLIDESHOW */
+    /* PORTRAIT SLIDESHOW */
     .slideshow {
-        width: 90%;
-        height: 380px;
-        margin: auto;
-        border-radius: 18px;
+        width: 320px;
+        height: 500px; /* TALL PORTRAIT FRAME */
+        margin: 20px auto;
+        border-radius: 20px;
         overflow: hidden;
-        position: relative;
-        box-shadow: 0 10px 30px rgba(255, 0, 150, 0.3);
         background: #000;
+        box-shadow: 0 10px 32px rgba(255, 0, 140, 0.35);
+        position: relative;
     }
 
     .slide {
         position: absolute;
         inset: 0;
         opacity: 0;
-        transition: 1.2s ease;
+        transition: 1.5s ease;
     }
 
     .slide img {
-        width: 100%;
         height: 100%;
-        object-fit: cover;   /* FULL LANDSCAPE FIT */
-        object-position: center;
-        transition: 10s ease;
+        width: 100%;
+        object-fit: cover;        /* PERFECT FOR PORTRAIT */
+        object-position: center;  /* Keeps face centered */
+        transition: 6s ease;
     }
 
     .slide.show {
@@ -64,50 +63,49 @@
 
     /* CONTROLS */
     .controls {
-        margin-top: 14px;
+        margin-top: 12px;
         display: flex;
         justify-content: center;
-        gap: 12px;
+        gap: 14px;
     }
 
     button {
-        background: #ff88bd;
+        background: #ff81b8;
         border: none;
         padding: 10px 16px;
+        color: #fff;
+        font-weight: 700;
         border-radius: 10px;
-        color: white;
         cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 6px 18px rgba(255, 46, 149, 0.25);
+        box-shadow: 0 6px 18px rgba(255, 46, 149, .25);
     }
 
-    /* SPARKLE ANIMATION */
+    /* SPARKLES */
     .sparkle {
         position: fixed;
         pointer-events: none;
         font-size: 18px;
-        color: #ff4da6;
-        opacity: 0.9;
-        animation: rise 4s linear forwards;
+        animation: up 4s linear forwards;
+        opacity: .9;
+        color: #ff4fa6;
     }
 
-    @keyframes rise {
+    @keyframes up {
         0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(-750px); opacity: 0; }
+        100% { transform: translateY(-700px); opacity: 0; }
     }
 
-    @media (max-width: 768px) {
-        .slideshow { height: 250px; width: 94%; }
-        h1 { font-size: 26px; }
+    @media(max-width: 768px){
+        .slideshow { width: 260px; height: 420px; }
+        h1 { font-size: 28px; }
     }
 </style>
 </head>
 
 <body>
 
-<h1>🎂 Happy Birthday Cheejaaa 🎂</h1>
-
-<p>You make life brighter, happier, softer — just by being in it 💗</p>
+<h1>🎀 Happy Birthday Cheejaaa 🎀</h1>
+<p>You bring softness, kindness & magic everywhere you go 💗</p>
 
 <div class="slideshow" id="slideshow">
     <div class="slide show"><img src="photo1.jpg"></div>
@@ -128,7 +126,7 @@
 <script>
     const slides = document.querySelectorAll(".slide");
     let index = 0;
-    let auto = setInterval(nextSlide, 5000);
+    let auto = setInterval(nextSlide, 4500);
 
     function showSlide(i) {
         slides.forEach((s, n) => s.classList.toggle("show", n === i));
@@ -159,7 +157,7 @@
                 btn.textContent = "Pause Music ⏸";
                 playing = true;
             } catch {
-                alert("Tap Play Music again to allow audio!");
+                alert("Tap Play again to allow music!");
             }
         } else {
             music.pause();
@@ -172,13 +170,13 @@
     function sparkle() {
         const s = document.createElement("div");
         s.className = "sparkle";
-        s.textContent = ["✨","💗","💖","🌸"][Math.floor(Math.random()*4)];
+        s.textContent = ["✨","💗","🌸","💖"][Math.floor(Math.random()*4)];
         s.style.left = Math.random() * window.innerWidth + "px";
         s.style.bottom = "0px";
         document.body.appendChild(s);
         setTimeout(() => s.remove(), 4000);
     }
-    setInterval(sparkle, 700);
+    setInterval(sparkle, 600);
 </script>
 
 </body>
