@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday — Dark Aesthetic</title>
+<style>
+  :root{
+    --bg1:#05060a;
+    --bg2:#0b0f1a;
+    --neon:#9b5cff;
+    --accent:#ff4da6;
+    --muted:#a8a8b3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    height:100%;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(155,92,255,0.06), transparent),
+                radial-gradient(1000px 500px at 90% 90%, rgba(255,77,166,0.04), transparent),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#e6e6ee;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    overflow:hidden;
+  }
+
+  .card{
+    width:min(1100px,96vw);
+    max-width:1100px;
+    border-radius:16px;
+    overflow:hidden;
+    position:relative;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 12px 40px rgba(2,6,23,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+    padding:22px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .left-h{
+    display:flex;
+    flex-direction:column;
+  }
+  h1{
+    font-size:36px;
+    letter-spacing:0.6px;
+    color:var(--neon);
+    text-shadow:
+      0 0 6px rgba(155,92,255,0.28),
+      0 6px 30px rgba(11,10,25,0.7);
+    margin-bottom:6px;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .btn{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--neon);
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    backdrop-filter: blur(6px);
+    transition: transform .12s ease, box-shadow .12s;
+  }
+  .btn:active{ transform:scale(.98) }
+  .btn.primary{
+    background: linear-gradient(90deg, rgba(155,92,255,0.12), rgba(255,77,166,0.08));
+    border:1px solid rgba(155,92,255,0.18);
+    box-shadow: 0 8px 28px rgba(155,92,255,0.08);
+    color:#fff;
+  }
+
+  /* slideshow */
+  .slideshow{
+    margin-top:18px;
+    position:relative;
+    height:540px;
+    border-radius:12px;
+    overflow:hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+    box-shadow: 0 12px 30px rgba(2,6,23,0.6), inset 0 2px 0 rgba(255,255,255,0.015);
+  }
+
+  .slide{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transition: opacity 1.2s ease, transform 9s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    will-change:opacity, transform;
+  }
+  .slide.show{ opacity:1; }
+  .slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transform:scale(1);
+    transition: transform 9s ease;
+    filter: contrast(1.02) saturate(1.02) brightness(.96);
+  }
+  .slide.show img{ transform: scale(1.06) translateY(-2%); }
+
+  /* neon caption */
+  .caption{
+    position:absolute;
+    left:18px;
+    bottom:18px;
+    padding:10px 14px;
+    border-radius:10px;
+    background: linear-gradient(180deg, rgba(10,8,20,0.38), rgba(10,8,20,0.25));
+    color:#fff;
+    font-weight:700;
+    text-shadow: 0 6px 22px rgba(155,92,255,0.14);
+    backdrop-filter: blur(6px);
+  }
+
+  /* small thumbnails */
+  .thumbs{
+    position:absolute;
+    right:18px;
+    top:18px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .thumbs img{
+    width:78px;
+    height:52px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.04);
+    cursor:pointer;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+    transform:scale(1);
+    transition: transform .15s ease, box-shadow .15s;
+  }
+  .thumbs img:hover{ transform:scale(1.03); box-shadow: 0 12px 28px rgba(155,92,255,0.06); }
+
+  /* particle stars */
+  canvas#stars{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    opacity:.9;
+  }
+
+  /* floating hearts (subtle) */
+  .heart{ position:fixed; pointer-events:none; font-size:20px; z-index:9; opacity:0.95; transform:translateY(0); transition: transform 3.6s linear, opacity 1.2s linear; }
+
+  /* message area overlay (center) */
+  .message{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-start;
+    padding:28px;
+    pointer-events:none;
+  }
+  .note{
+    max-width:46%;
+    background: linear-gradient(180deg, rgba(10,8,20,0.5), rgba(10,8,20,0.38));
+    color:#efecff;
+    padding:18px 20px;
+    border-radius:12px;
+    border:1px solid rgba(155,92,255,0.06);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(11,8,20,0.6);
+    font-weight:600;
+    pointer-events:auto;
+  }
+  .note small{ display:block; color:var(--muted); font-weight:400; margin-top:8px }
+
+  /* responsive */
+  @media (max-width:980px){
+    .note{ max-width:66% }
+    .thumbs{ right:12px; top:12px }
+    .slideshow{ height:420px }
+  }
+  @media (max-width:680px){
+    .card{ padding:14px }
+    .slideshow{ height:320px }
+    h1{ font-size:26px }
+    .note{ max-width:86% }
+    .thumbs{ display:none }
+  }
+</style>
+</head>
+<body>
+
+<div class="card" role="main" aria-label="Dark birthday card">
+  <header>
+    <div class="left-h">
+      <h1>✨ Happy Birthday — [Her Name] ✨</h1>
+      <div class="subtitle">Into the night, we celebrate you — all vibes, no noise.</div>
+    </div>
+
+    <div class="controls" aria-hidden="false">
+      <button class="btn" id="prev">‹ Prev</button>
+      <button class="btn primary" id="playPause">Play Music ▶</button>
+      <button class="btn" id="next">Next ›</button>
+    </div>
+  </header>
+
+  <div class="slideshow" id="slideshow">
+    <!-- canvas for subtle star particles -->
+    <canvas id="stars"></canvas>
+
+    <!-- slides (replace photoX.jpg) -->
+    <div class="slide show"><img src="photo1.jpg" alt="photo 1"></div>
+    <div class="slide"><img src="photo2.jpg" alt="photo 2"></div>
+    <div class="slide"><img src="photo3.jpg" alt="photo 3"></div>
+    <div class="slide"><img src="photo4.jpg" alt="photo 4"></div>
+    <div class="slide"><img src="photo5.jpg" alt="photo 5"></div>
+
+    <div class="caption" id="caption">midnight memories</div>
+
+    <div class="thumbs" id="thumbs">
+      <img src="photo1.jpg" data-index="0" alt="t1">
+      <img src="photo2.jpg" data-index="1" alt="t2">
+      <img src="photo3.jpg" data-index="2" alt="t3">
+      <img src="photo4.jpg" data-index="3" alt="t4">
+      <img src="photo5.jpg" data-index="4" alt="t5">
+    </div>
+
+    <div class="message" aria-hidden="false">
+      <div class="note" id="note" contenteditable="true" aria-label="Personal message">
+        I hope your evening is soft, glittering, and full of the people & things you love. <small>Type here to personalize — changes show instantly.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- audio placeholder (replace music.mp3) -->
+<audio id="audio" loop src="music.mp3"></audio>
+
+<script>
+/* ------------- slideshow logic ------------- */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const thumbs = Array.from(document.querySelectorAll('.thumbs img'));
+const caption = document.getElementById('caption');
+const note = document.getElementById('note');
+let idx = 0, autoTimer = null;
+
+const captions = [
+  "midnight memories",
+  "nocturnal smiles",
+  "soft neon nights",
+  "that warm laugh",
+  "candid glow"
+];
+
+function show(n){
+  idx = (n + slides.length) % slides.length;
+  slides.forEach((s,i)=> s.classList.toggle('show', i===idx));
+  caption.textContent = captions[idx] || '';
+}
+function next(){ show(idx+1); }
+function prev(){ show(idx-1); }
+
+document.getElementById('next').onclick = ()=> { stopAuto(); next(); };
+document.getElementById('prev').onclick = ()=> { stopAuto(); prev(); };
+
+thumbs.forEach(t => t.addEventListener('click', e => {
+  stopAuto();
+  show(Number(e.target.dataset.index));
+}));
+
+function startAuto(){ autoTimer = setInterval(()=> show(idx+1), 5200); }
+function stopAuto(){ if(autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+
+startAuto();
+
+/* ------------- play / pause music ------------- */
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('playPause');
+let playing = false;
+playBtn.addEventListener('click', async ()=>{
+  if(!playing){
+    try { await audio.play(); playBtn.textContent = 'Pause Music ⏸'; playing = true; }
+    catch(e){ alert('Browser blocked autoplay — click Play Music again to allow audio.'); }
+  } else {
+    audio.pause(); playBtn.textContent = 'Play Music ▶'; playing = false;
+  }
+});
+
+/* ------------- particle stars on canvas ------------- */
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const stars = [];
+for(let i=0;i<160;i++){
+  stars.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*1.6 + 0.2,
+    alpha: Math.random()*0.8 + 0.1,
+    tw: Math.random()*240 + 40
+  });
+}
+let t = 0;
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(const s of stars){
+    const pulse = (Math.sin((t + s.tw)/60) + 1)/2 * 0.6 + 0.4;
+    ctx.globalAlpha = s.alpha * pulse;
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+  t++;
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+/* ------------- subtle floating hearts ------------- */
+function spawnHeart(){
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.textContent = ['💗','💖','💕'][Math.floor(Math.random()*3)];
+  h.style.left = (20 + Math.random()*(window.innerWidth-40)) + 'px';
+  h.style.bottom = (20 + Math.random()*30) + 'px';
+  h.style.fontSize = (14 + Math.random()*18) + 'px';
+  document.body.appendChild(h);
+  requestAnimationFrame(()=> {
+    h.style.transform = `translateY(-${600 + Math.random()*300}px) scale(${1 + Math.random()*0.5})`;
+    h.style.opacity = '0';
+  });
+  setTimeout(()=> h.remove(), 4200);
+}
+setInterval(spawnHeart, 900);
+
+/* ------------- allow typing personalization (auto save visually) ------------- */
+note.addEventListener('input', ()=> {
+  // already contenteditable; leave it as-is - user edits directly
+});
+
+/* ------------- keyboard accessibility ------------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'ArrowRight') { stopAuto(); next(); }
+  if(e.key === 'ArrowLeft')  { stopAuto(); prev(); }
+  if(e.key === ' ') {
+    e.preventDefault();
+    playBtn.click();
+  }
+});
+</script>
+</body>
+</html>
